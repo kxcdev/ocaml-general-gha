@@ -1,0 +1,26 @@
+name: Build and test with ghcr.io/kxcinc/ocaml-general
+description: Build and test OCaml projects using the ghcr.io/kxcinc/ocaml-general docker container
+author: KXC Members and Contributors
+branding:
+  icon: sunrise
+  color: orange
+inputs:
+  ocaml-version:
+    description: "the OCaml compiler version (e.g. '4.14.1', '5.0.0', etc.)"
+    required: true
+  node-version:
+    description: "the Node.js version (e.g. 'hydrogen')"
+    required: false
+    default: latest
+  os:
+    description: "the operating system (e.g. 'ubuntu.22.04')"
+    required: false
+    default: "ubuntu.22.04"
+  arch:
+    description: "the container architecture (e.g. 'amd64', 'arm64')"
+    required: false
+    default: amd64
+runs:
+  using: "docker"
+  image: "docker://ghcr.io/kxcinc/ocaml-general:${{ inputs.os }}-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-${{ inputs.arch }}"
+  entrypoint: "main.sh"
