@@ -7,3 +7,5 @@ branding:
 runs:
   using: "docker"
   image: "Dockerfile"
+  env:
+    TAGA: 5.0.0
