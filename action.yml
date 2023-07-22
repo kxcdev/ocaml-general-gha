@@ -4,7 +4,6 @@ author: KXC Members and Contributors
 branding:
   icon: sunrise
   color: orange
-inputs:
 runs:
   using: "docker"
   image: "Dockerfile"
