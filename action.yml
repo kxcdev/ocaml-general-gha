@@ -5,23 +5,6 @@ branding:
   icon: sunrise
   color: orange
 inputs:
-  ocaml-version:
-    description: "the OCaml compiler version (e.g. '4.14.1', '5.0.0', etc.)"
-    required: true
-  node-version:
-    description: "the Node.js version (e.g. 'hydrogen')"
-    required: false
-    default: latest
-  os:
-    description: "the operating system (e.g. 'ubuntu.22.04')"
-    required: false
-    default: "ubuntu.22.04"
-  arch:
-    description: "the container architecture (e.g. 'amd64', 'arm64')"
-    required: false
-    default: amd64
 runs:
-  using: "compose"
-  steps:
-    - name: test-run
-      uses: ./default
+  using: "docker"
+  image: "Dockerfile"
