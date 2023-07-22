@@ -22,7 +22,9 @@ inputs:
     default: amd64
 runs:
   using: "docker"
-  # image: "Dockerfile"
+  image: "Dockerfile"
   #image: "docker://ghcr.io/kxcinc/ocaml-general:${{ inputs.os }}-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-${{ inputs.arch }}"
-  image: "Dockerfile-${{ inputs.os }}-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-${{ inputs.arch }}"
+  # image: "Dockerfile-${{ inputs.os }}-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-${{ inputs.arch }}"
   entrypoint: "main.sh"
+  args:
+    IMAGE_TAG: "${{ inputs.os }}-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-${{ inputs.arch }}"
