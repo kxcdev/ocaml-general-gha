@@ -61,6 +61,15 @@ outputs:
 runs:
   using: composite
   steps:
+    - run: echo "action_path is " "${{ github.action_path }}"
+      shell: bash
+    - run: find "${{ github.action_path }}"
+      shell: bash
+    - run: find "${{ github.action_path }}/.."
+      shell: bash
+    - run: echo "pwd is $(pwd)"
+      shell: bash
+
     - name: Build and test with OCaml
       id: internals_ocaml-general-gha-bare
       uses: kxcdev/ocaml-general-gha-bare@78ec6ee277e0ee5c0185e8f083cf51cb65cae5e4
