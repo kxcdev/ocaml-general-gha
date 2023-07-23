@@ -68,7 +68,7 @@ let () =
   let dockerfile_image_specs = image_specs |&> (?< (?. Filename.concat "Dockerfile")) in
   match target, lazy (target >>? String.chop_suffix (Filename.dir_sep ^ "Dockerfile")) with
   | None, _ -> image_specs |!> !!(outf "%s : %s@.")
-  | Some "dockerfiles-list.inc", _ ->
+  | Some "dockerfiles-list.txt", _ ->
      let decor path =
        match ArgOptions.(get_option (StringOption "-outdir")) with
        | None -> path

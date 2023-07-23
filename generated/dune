@@ -1,12 +1,11 @@
-(subdir dune.inc
- (rule
-  (target dockerfiles-list.inc)
-  (mode (promote (until-clean)))
-  (action
-   (run
-     ../../generators/gen_dockerfiles.exe
-     -info %{dep:../../info/available-docker-image.json}
-     -output %{target} -outdir "dockerfiles"))))
+(rule
+ (target dockerfiles-list.txt)
+ (mode (promote (until-clean)))
+ (action
+  (run
+    ../generators/gen_dockerfiles.exe
+    -info %{dep:../info/available-docker-image.json}
+    -output %{target} -outdir "generated/dockerfiles")))
 
 (rule
  (targets
