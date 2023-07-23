@@ -5,10 +5,12 @@ branding:
   icon: sunrise
   color: orange
 inputs:
+
   build-command:
     description: "Override the default build command"
     required: false
     default: ""
+
   test-command:
     description: "Override the default test command"
     required: false
@@ -17,6 +19,7 @@ inputs:
     description: "Whether or not to skip running the tests"
     required: false
     default: false
+
   setup-command:
     description: "Override the default setup command"
     required: false
@@ -25,6 +28,16 @@ inputs:
     description: "Whether or not to skip running setups"
     required: false
     default: false
+
+  with-odoc:
+    description: "Build odoc documents"
+    required: false
+    default: false
+  odoc-build-command:
+    description: "Override the default odoc build command"
+    required: false
+    default: "opam exec -- dune build @doc"
+
 runs:
   using: "docker"
   image: "generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile"
@@ -34,3 +47,5 @@ runs:
     OGA_SKIP_TESTING: "${{ inputs.skip-testing }}"
     OGA_SETUP_COMMAND: "${{ inputs.setup-command }}"
     OGA_SKIP_SETUP: "${{ inputs.skip-setup }}"
+    OGA_BUILD_WITH_ODOC: "${{ inputs.with-odoc }}"
+    OGA_ODOC_BUILD_COMMAND: "${{ inputs.odoc-build-command }}"

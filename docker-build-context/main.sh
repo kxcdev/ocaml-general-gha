@@ -47,6 +47,12 @@ else
      opam exec -- bash -c "$OGA_BUILD_COMMAND")
 fi
 
+### STEP 2b. build odoc if requested
+if [ "$OGA_BUILD_WITH_ODOC" == "true" ]; then
+    echo && echo ">>> build odoc"
+    bash -xe -c "$OGA_ODOC_BUILD_COMMAND"
+fi
+
 ### STEP 3. test
 if [ "$OGA_SKIP_TESTING" == "true" ]; then
     echo && echo ">>> testing is skipped as inputs.skip-testing is set"
