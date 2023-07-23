@@ -3,21 +3,21 @@
  (mode (promote (until-clean)))
  (action
   (run
-    ../generators/gen_dockerfiles.exe
-    -info %{dep:../info/available-docker-image.json}
+    ../camlsrc/generators/gen_dockerfiles.exe
+    -info %{dep:../info/available-docker-images.json}
     -output %{target} -outdir "generated/dockerfiles")))
 
 (rule
  (targets
   (dir dockerfiles))
- (deps dockerfiles-list.txt ../main.sh)
+ (deps dockerfiles-list.txt (source_tree ../docker-build-context))
  (alias all)
  (mode (promote (until-clean)))
  (action
   (progn
    (bash "mkdir -p dockerfiles")
    (run
-     ../generators/gen_dockerfiles.exe
-     -info %{dep:../info/available-docker-image.json}
-     -target "(all-dockerfiles)" -outdir dockerfiles)
-   (bash "cat dockerfiles-list.txt | xargs -n1 dirname | (cd .. && xargs -n1 cp main.sh)"))))
+     ../camlsrc/generators/gen_dockerfiles.exe
+     -info %{dep:../info/available-docker-images.json}
+     -target "(all-dockerfiles)" -outdir dockerfiles -resdir "build-context")
+   (bash "cat dockerfiles-list.txt | xargs -n1 dirname | (cd .. && xargs -I{} -n1 cp -r docker-build-context/ {}/build-context/)"))))
