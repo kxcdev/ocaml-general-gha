@@ -46,7 +46,7 @@ runs:
   using: composite
   steps:
     - name: Build and test with OCaml
-      uses: ./sub-actions/v2-original
+      uses: kxcdev/ocaml-general-gha-bare@v2-future
       with:
         build-command: "${{ inputs.build-command }}"
         test-command: "${{ inputs.test-command }}"
