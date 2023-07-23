@@ -4,12 +4,11 @@
 ## ref: https://github.com/orgs/community/discussions/26855
 
 ### STEP 0.
-pushd /github/workspace
-
-# print workspace and ci machine info
 echo ">>> GITHUB_WORKSPACE"
 echo "$GITHUB_WORKSPACE"
+cd "$GITHUB_WORKSPACE"
 
+# print workspace and ci machine info
 echo ">>> uname -a"
 uname -a
 
@@ -31,12 +30,33 @@ git rev-parse --is-inside-work-tree && \
     git ls-files
 
 ### STEP 1. install dependencies
-echo && echo ">>> install OCaml dependencies"
-(set -xe; opam install . --yes --deps-only --with-test --verbose)
+if [ "$OGA_SKIP_SETUP" == "true" ]; then
+    echo && echo ">>> setup is skipped as inputs.skip-setup is set"
+else
+    echo && echo ">>> install OCaml dependencies (setup)"
+    bash -xe -c "$OGA_SETUP_COMMAND"
+fi
 
+### STEP 2. build
+echo && echo ">>> build project"
+if [ -z "$OGA_BUILD_COMMAND" ]; then
+    (set -xe
+     opam exec -- dune build)
+else
+    (set -xe
+     opam exec -- bash -c "$OGA_BUILD_COMMAND")
+fi
 
-### STEP 2. build and test
-echo && echo ">>> dune build and runtest"
-(set -xe
- opam exec -- dune build
- opam exec -- dune runtest)
+### STEP 3. test
+if [ "$OGA_SKIP_TESTING" == "true" ]; then
+    echo && echo ">>> testing is skipped as inputs.skip-testing is set"
+else
+    echo && echo ">>> test project"
+    if [ -z "$OGA_TEST_COMMAND" ]; then
+        (set -xe
+         opam exec -- dune runtest)
+    else
+        (set -xe
+         opam exec -- bash -c "$OGA_TEST_COMMAND")
+    fi
+fi

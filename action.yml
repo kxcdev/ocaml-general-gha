@@ -4,6 +4,33 @@ author: KXC Members and Contributors
 branding:
   icon: sunrise
   color: orange
+inputs:
+  build-command:
+    description: "Override the default build command"
+    required: false
+    default: ""
+  test-command:
+    description: "Override the default test command"
+    required: false
+    default: ""
+  skip-testing:
+    description: "Whether or not to skip running the tests"
+    required: false
+    default: false
+  setup-command:
+    description: "Override the default setup command"
+    required: false
+    default: "opam install . --yes --deps-only --with-test --verbose"
+  skip-setup:
+    description: "Whether or not to skip running setups"
+    required: false
+    default: false
 runs:
   using: "docker"
   image: "generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile"
+  env:
+    OGA_BUILD_COMMAND: "${{ inputs.build-command }}"
+    OGA_TEST_COMMAND: "${{ inputs.test-command }}"
+    OGA_SKIP_TESTING: "${{ inputs.skip-testing }}"
+    OGA_SETUP_COMMAND: "${{ inputs.setup-command }}"
+    OGA_SKIP_SETUP: "${{ inputs.skip-setup }}"
