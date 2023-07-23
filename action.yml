@@ -6,6 +6,10 @@ branding:
   color: orange
 inputs:
 
+  report-test-result:
+    required: false
+    default: true
+
   ocaml-version:
     default: 5.0.0
   node-version:
@@ -86,7 +90,7 @@ runs:
 
     - name: Notify test running (update)
       uses: marocchino/sticky-pull-request-comment@v2
-      if: github.event_name == 'pull_request'
+      if: ${{ inputs.report-test-result == 'true' && github.event_name == 'pull_request' }}
       with:
         header: ${{ github.event_name }}-test-report
         only_update: true
@@ -97,6 +101,7 @@ runs:
 
     - name: Notify test running (fresh)
       uses: marocchino/sticky-pull-request-comment@v2
+      if:  inputs.report-test-result == 'true'
       with:
         header: ${{ github.event_name }}-test-report
         only_create: true
@@ -156,6 +161,7 @@ runs:
     #   if: ${{ inputs.odoc-deploy-github-pages }}
 
     - name: make ci-test
+      if:  inputs.report-test-result == 'true'
       run: |
         mkdir -p _ci_temp
         TEST_RET="${{ steps.main.outputs.return-codes--test }}"
@@ -170,13 +176,13 @@ runs:
 
     - name: comment test result (pr)
       uses: marocchino/sticky-pull-request-comment@v2
-      if: github.event_name == 'pull_request'
+      if:  ${{ inputs.report-test-result == 'true' && github.event_name == 'pull_request' }}
       with:
         header: ${{ github.event_name }}-test-report
         path: _ci_temp/ci-test-report.txt
 
     - name: comment test result (push)
-      if: github.event_name == 'push'
+      if: ${{ inputs.report-test-result == 'true' && github.event_name == 'push' }}
       run: |
         jq -Rs '{"body": . }' _ci_temp/ci-test-report.txt | \
         curl -sL  -X POST -d @- \
