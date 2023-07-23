@@ -67,7 +67,7 @@ runs:
       uses: actions/configure-pages@v3
 
     - name: Upload artifact
-      if: ${{ inputs.with-odoc }}
+      if: ${{ inputs.odoc-deploy-github-pages }}
       uses: actions/upload-pages-artifact@v2
       with:
         path: ${{ steps.internals_ocaml-general-gha-bare.outputs.odoc-site-path }}
