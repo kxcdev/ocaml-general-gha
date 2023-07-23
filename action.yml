@@ -43,13 +43,15 @@ outputs:
     description: "Path to odoc document site build result, if with-odoc is set to true"
 
 runs:
-  using: "docker"
-  image: "generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile"
-  env:
-    OGA_BUILD_COMMAND: "${{ inputs.build-command }}"
-    OGA_TEST_COMMAND: "${{ inputs.test-command }}"
-    OGA_SKIP_TESTING: "${{ inputs.skip-testing }}"
-    OGA_SETUP_COMMAND: "${{ inputs.setup-command }}"
-    OGA_SKIP_SETUP: "${{ inputs.skip-setup }}"
-    OGA_BUILD_WITH_ODOC: "${{ inputs.with-odoc }}"
-    OGA_ODOC_BUILD_COMMAND: "${{ inputs.odoc-build-command }}"
+  using: composite
+  steps:
+    - name: Build and test with OCaml
+      uses: ./sub-actions/v2-original
+      with:
+        build-command: "${{ inputs.build-command }}"
+        test-command: "${{ inputs.test-command }}"
+        skip-testing: "${{ inputs.skip-testing }}"
+        setup-command: "${{ inputs.setup-command }}"
+        skip-setup: "${{ inputs.skip-setup }}"
+        with-odoc: "${{ inputs.with-odoc }}"
+        odoc-build-command: "${{ inputs.odoc-build-command }}"
