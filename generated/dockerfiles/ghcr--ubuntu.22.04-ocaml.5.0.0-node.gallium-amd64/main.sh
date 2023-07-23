@@ -30,11 +30,13 @@ echo && echo ">>> git ls-files"
 git rev-parse --is-inside-work-tree && \
     git ls-files
 
-set -xe
-
 ### STEP 1. install dependencies
-opam install . --yes --deps-only --with-test --verbose
+echo && echo ">>> install OCaml dependencies"
+(set -xe; opam install . --yes --deps-only --with-test --verbose)
+
 
 ### STEP 2. build and test
-opam exec -- dune build
-opam exec -- dune runtest
+echo && echo ">>> dune build and runtest"
+(set -xe
+ opam exec -- dune build
+ opam exec -- dune runtest)
