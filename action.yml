@@ -74,24 +74,24 @@ runs:
     - run: find "./.github/vendored_actions/ocaml-general-gha"
       shell: bash
 
-   - name: Notify test running (update)
-     uses: marocchino/sticky-pull-request-comment@v2
-     if: github.event_name == 'pull_request'
-     with:
-       header: ${{ github.event_name }}-test-report
-       only_update: true
-       append: true
-       message: |
+    - name: Notify test running (update)
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: github.event_name == 'pull_request'
+      with:
+        header: ${{ github.event_name }}-test-report
+        only_update: true
+        append: true
+        message: |
 
-         ⚠️ New test running for ${{ github.sha }}.
+          ⚠️ New test running for ${{ github.sha }}.
 
-   - name: Notify test running (fresh)
-     uses: marocchino/sticky-pull-request-comment@v2
-     with:
-       header: ${{ github.event_name }}-test-report
-       only_create: true
-       message: |
-         ⚡️ Start running test for ${{ github.sha }}.
+    - name: Notify test running (fresh)
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        header: ${{ github.event_name }}-test-report
+        only_create: true
+        message: |
+          ⚡️ Start running test for ${{ github.sha }}.
 
     - name: Build and test with OCaml
       id: main
