@@ -5,10 +5,12 @@ branding:
   icon: sunrise
   color: orange
 inputs:
+
   build-command:
     description: "Override the default build command"
     required: false
     default: ""
+
   test-command:
     description: "Override the default test command"
     required: false
@@ -17,6 +19,7 @@ inputs:
     description: "Whether or not to skip running the tests"
     required: false
     default: false
+
   setup-command:
     description: "Override the default setup command"
     required: false
@@ -25,12 +28,96 @@ inputs:
     description: "Whether or not to skip running setups"
     required: false
     default: false
+
+  with-odoc:
+    description: "Build odoc documents"
+    required: false
+    default: false
+  odoc-build-command:
+    description: "Override the default odoc build command"
+    required: false
+    default: "opam exec -- dune build @doc"
+  odoc-upload-artifact:
+    required: false
+    default: true
+  odoc-upload-artifact-name:
+    required: false
+    default: "github-pages"
+  odoc-deploy-github-pages:
+    required: false
+    description: "NOT YET SUPPORTED due to actions/runner#2009"
+    default: false
+
+outputs:
+  odoc-site-path:
+    description: |
+      !!(DUE TO actions/runner#2009, THIS IS OUTPUT IS NOT AVAILABLE)
+      Path to odoc document site build result, if with-odoc is set to true
+  odoc-github-pages-url:
+    description: |
+      !!(DUE TO actions/runner#2009, THIS IS OUTPUT IS NOT AVAILABLE)
+      URL to deployed GitHub Pages by odoc
+
 runs:
-  using: "docker"
-  image: "generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile"
-  env:
-    OGA_BUILD_COMMAND: "${{ inputs.build-command }}"
-    OGA_TEST_COMMAND: "${{ inputs.test-command }}"
-    OGA_SKIP_TESTING: "${{ inputs.skip-testing }}"
-    OGA_SETUP_COMMAND: "${{ inputs.setup-command }}"
-    OGA_SKIP_SETUP: "${{ inputs.skip-setup }}"
+  using: composite
+  steps:
+    - run: echo "action_path is " "${{ github.action_path }}"
+      shell: bash
+    - run: find "${{ github.action_path }}"
+      shell: bash
+    - run: echo "pwd is $(pwd)"
+      shell: bash
+    - run: |
+        mkdir -p .github/vendored_actions
+        cp -r "${{ github.action_path }}/" ".github/vendored_actions/ocaml-general-gha/"
+      shell: bash
+    - run: find "./.github/vendored_actions/ocaml-general-gha"
+      shell: bash
+
+    - name: Build and test with OCaml
+      id: main
+      uses: "./.github/vendored_actions/ocaml-general-gha/sub-actions/main-action"
+      with:
+        build-command: "${{ inputs.build-command }}"
+        test-command: "${{ inputs.test-command }}"
+        skip-testing: "${{ inputs.skip-testing }}"
+        setup-command: "${{ inputs.setup-command }}"
+        skip-setup: "${{ inputs.skip-setup }}"
+        with-odoc: "${{ inputs.with-odoc }}"
+        odoc-build-command: "${{ inputs.odoc-build-command }}"
+
+    - name: Upload artifact
+      if: ${{ inputs.with-odoc == 'true' && inputs.odoc-upload-artifact == 'true' }}
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: ${{ steps.main.outputs.odoc-site-path }}
+        name: ${{ inputs.odoc-upload-artifact-name }}
+
+    ## won't work because of actions/runner#2009
+    - run: echo "odoc-site-path=${{ steps.main.outputs.odoc-site-path }}" >> $GITHUB_OUTPUT
+      shell: bash
+      id: output--odoc-site-path
+      if: ${{ inputs.with-odoc == 'true' }}
+
+    - run: |
+        echo "odoc-deploy-github-pages not yet supported, pending actions/runner#2009"
+        false
+      shell: bash
+      if: ${{ inputs.odoc-deploy-github-pages == 'true' }}
+
+    ## waiting for the resolution of actions/runner#2009
+
+    # - name: Setup Pages
+    #   if: ${{ inputs.odoc-deploy-github-pages }}
+    #   uses: actions/configure-pages@v3
+
+    # - name: Deploy to GitHub Pages
+    #   if: ${{ inputs.odoc-deploy-github-pages }}
+    #   id: deployment
+    #   uses: actions/deploy-pages@v2
+
+    ## won't work because of actions/runner#2009
+    # - run: echo "odoc-github-pages-url=${{ steps.deployment.outputs.page_url }}" >> $GITHUB_OUTPUT
+    #   shell: bash
+    #   id: output--odoc-github-pages-url
+    #   if: ${{ inputs.odoc-deploy-github-pages }}
