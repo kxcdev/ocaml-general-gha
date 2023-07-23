@@ -1,6 +1,16 @@
 name: Build and test with ghcr.io/kxcinc/ocaml-general
 description: Build and test OCaml projects using the ghcr.io/kxcinc/ocaml-general docker container
 
+inputs:
+  build-command:
+  test-command:
+  skip-testing:
+  setup-command:
+  skip-setup:
+  with-odoc:
+  odoc-build-command:
+  internal--test-log:
+
 outputs:
   odoc-site-path:
     description: "Path to odoc document site build result, if with-odoc is set to true"
