@@ -65,15 +65,19 @@ runs:
       shell: bash
     - run: find "${{ github.action_path }}"
       shell: bash
-    - run: find "${{ github.action_path }}/.."
-      shell: bash
     - run: echo "pwd is $(pwd)"
+      shell: bash
+    - run: |
+        mkdir -p .github/vendored_actions
+        cp -r "${{ github.action_path }}/" ".github/vendored_actions/ocaml-general-gha/"
+      shell: bash
+    - run: find "./.github/vendored_actions/ocaml-general-gha"
       shell: bash
 
     - name: Build and test with OCaml
       id: internals_ocaml-general-gha-bare
       # uses: kxcdev/ocaml-general-gha-bare@78ec6ee277e0ee5c0185e8f083cf51cb65cae5e4
-      uses: "${{ github.action_path }}/sub-actions/v2-original"
+      uses: "./.github/vendored_actions/ocaml-general-gha"
       with:
         build-command: "${{ inputs.build-command }}"
         test-command: "${{ inputs.test-command }}"
