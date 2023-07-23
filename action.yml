@@ -1,22 +1,39 @@
 name: Build and test with ghcr.io/kxcinc/ocaml-general
 description: Build and test OCaml projects using the ghcr.io/kxcinc/ocaml-general docker container
 author: KXC Members and Contributors
+
 branding:
   icon: sunrise
   color: orange
+
 inputs:
+
+  report-test-result:
+    required: false
+    default: true
+  pr-report-test-result:
+    required: false
+    default: true
+
+  ocaml-version:
+    default: 5.0.0
+  node-version:
+    default: latest
+
   build-command:
     description: "Override the default build command"
     required: false
-    default: ""
+    default: "opam exec -- dune build"
+
   test-command:
     description: "Override the default test command"
     required: false
-    default: ""
+    default: "opam exec -- dune runtest"
   skip-testing:
     description: "Whether or not to skip running the tests"
     required: false
     default: false
+
   setup-command:
     description: "Override the default setup command"
     required: false
@@ -25,12 +42,167 @@ inputs:
     description: "Whether or not to skip running setups"
     required: false
     default: false
+
+  with-odoc:
+    description: "Build odoc documents"
+    required: false
+    default: false
+  odoc-build-command:
+    description: "Override the default odoc build command"
+    required: false
+    default: "opam exec -- dune build @doc"
+  odoc-upload-artifact:
+    required: false
+    default: true
+  odoc-upload-artifact-name:
+    required: false
+    default: "github-pages"
+  odoc-deploy-github-pages:
+    required: false
+    description: "NOT YET SUPPORTED due to actions/runner#2009"
+    default: false
+
+outputs:
+  odoc-site-path:
+    description: |
+      !!(DUE TO actions/runner#2009, THIS IS OUTPUT IS NOT AVAILABLE)
+      Path to odoc document site build result, if with-odoc is set to true
+  odoc-github-pages-url:
+    description: |
+      !!(DUE TO actions/runner#2009, THIS IS OUTPUT IS NOT AVAILABLE)
+      URL to deployed GitHub Pages by odoc
+
 runs:
-  using: "docker"
-  image: "generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile"
-  env:
-    OGA_BUILD_COMMAND: "${{ inputs.build-command }}"
-    OGA_TEST_COMMAND: "${{ inputs.test-command }}"
-    OGA_SKIP_TESTING: "${{ inputs.skip-testing }}"
-    OGA_SETUP_COMMAND: "${{ inputs.setup-command }}"
-    OGA_SKIP_SETUP: "${{ inputs.skip-setup }}"
+  using: composite
+  steps:
+    - run: |
+        mkdir -p .github/vendored_actions
+        cp -r "${{ github.action_path }}/" ".github/vendored_actions/ocaml-general-gha/"
+        GHA_ROOT=".github/vendored_actions/ocaml-general-gha"
+        case "${{ runner.arch }}" in
+          X64)
+            GHA_VARIANT_ARCH=amd64
+            ;;
+          ARM64)
+            GHA_VARIANT_ARCH=arm64
+            ;;
+          *)
+            echo "unsupported github runner.arch: ${{ runner.arch }}"
+            exit 2
+            ;;
+        esac
+        GHA_SELECTED_VARIANT="ghcr--ubuntu.22.04-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-$GHA_VARIANT_ARCH"
+        echo "selected-variant=$GHA_SELECTED_VARIANT" >> $GITHUB_OUTPUT
+        GHA_SELECTED="$GHA_ROOT/generated/dockerfiles/$GHA_SELECTED_VARIANT"
+        cp -r "$GHA_SELECTED/" "$GHA_ROOT/sub-actions/main-action/selected/"
+        find "$GHA_ROOT/sub-actions/main-action/selected"
+      id: setup
+      shell: bash
+
+    - name: Notify test running (update)
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: ${{ inputs.report-test-result == 'true' && inputs.pr-report-test-result == 'true' && github.event_name == 'pull_request' }}
+      with:
+        header: ${{ github.event_name }}-${{ steps.setup.outputs.selected-variant }}-test-report
+        only_update: true
+        append: true
+        message: |
+
+          ⚠️ New test running for ${{ github.sha }}.
+
+    - name: Notify test running (fresh)
+      uses: marocchino/sticky-pull-request-comment@v2
+      if:  ${{ inputs.report-test-result == 'true' && inputs.pr-report-test-result == 'true' }}
+      with:
+        header: ${{ github.event_name }}-${{ steps.setup.outputs.selected-variant }}-test-report
+        only_create: true
+        message: |
+          ## OCaml General GitHub Action Report
+          Docker Image Variant: ${{ steps.setup.outputs.selected-variant }}
+
+          ⚡️ Start running test for ${{ github.sha }}.
+
+    - run: mkdir -p "./_ci_temp/"
+      shell: bash
+
+    - name: Build and test with OCaml
+      id: main
+      uses: "./.github/vendored_actions/ocaml-general-gha/sub-actions/main-action"
+      with:
+        build-command: "${{ inputs.build-command }}"
+        test-command: "${{ inputs.test-command }}"
+        skip-testing: "${{ inputs.skip-testing }}"
+        setup-command: "${{ inputs.setup-command }}"
+        skip-setup: "${{ inputs.skip-setup }}"
+        with-odoc: "${{ inputs.with-odoc }}"
+        odoc-build-command: "${{ inputs.odoc-build-command }}"
+        internal--test-log: "./_ci_temp/__gha-test-log.txt"
+
+    - name: Upload artifact
+      if: ${{ inputs.with-odoc == 'true' && inputs.odoc-upload-artifact == 'true' }}
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: ${{ steps.main.outputs.odoc-site-path }}
+        name: ${{ inputs.odoc-upload-artifact-name }}
+
+    ## won't work because of actions/runner#2009
+    - run: echo "odoc-site-path=${{ steps.main.outputs.odoc-site-path }}" >> $GITHUB_OUTPUT
+      shell: bash
+      id: output--odoc-site-path
+      if: ${{ inputs.with-odoc == 'true' }}
+
+    - run: |
+        echo "odoc-deploy-github-pages not yet supported, pending actions/runner#2009"
+        false
+      shell: bash
+      if: ${{ inputs.odoc-deploy-github-pages == 'true' }}
+
+    ## waiting for the resolution of actions/runner#2009
+
+    # - name: Setup Pages
+    #   if: ${{ inputs.odoc-deploy-github-pages }}
+    #   uses: actions/configure-pages@v3
+
+    # - name: Deploy to GitHub Pages
+    #   if: ${{ inputs.odoc-deploy-github-pages }}
+    #   id: deployment
+    #   uses: actions/deploy-pages@v2
+
+    ## won't work because of actions/runner#2009
+    # - run: echo "odoc-github-pages-url=${{ steps.deployment.outputs.page_url }}" >> $GITHUB_OUTPUT
+    #   shell: bash
+    #   id: output--odoc-github-pages-url
+    #   if: ${{ inputs.odoc-deploy-github-pages }}
+
+    - name: make ci-test
+      if:  inputs.report-test-result == 'true'
+      run: |
+        mkdir -p _ci_temp
+        TEST_RET="${{ steps.main.outputs.return-codes--test }}"
+        echo "## OCaml General GitHub Action Report" > _ci_temp/ci-test-report.txt
+        echo "#### $(([ $TEST_RET -eq 0 ] && echo "✅✅✅") || echo "🚨🚨🚨") Test result for $GITHUB_SHA (Ref_name=\`$GITHUB_REF_NAME\`)" > _ci_temp/ci-test-report.txt
+        echo "CI Job: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> _ci_temp/ci-test-report.txt
+        echo "Docker Image Variant: ${{ steps.setup.outputs.selected-variant }}" >> _ci_temp/ci-test-report.txt
+        echo >> _ci_temp/ci-test-report.txt
+        echo '```' >> _ci_temp/ci-test-report.txt
+        cat "./_ci_temp/__gha-test-log.txt" >> _ci_temp/ci-test-report.txt
+        echo '```' >> _ci_temp/ci-test-report.txt
+        exit $TEST_RET
+      shell: bash
+
+    - name: comment test result (pr)
+      uses: marocchino/sticky-pull-request-comment@v2
+      if:  ${{ inputs.report-test-result == 'true' && inputs.pr-report-test-result == 'true' && github.event_name == 'pull_request' }}
+      with:
+        header: ${{ github.event_name }}-${{ steps.setup.outputs.selected-variant }}-test-report
+        path: _ci_temp/ci-test-report.txt
+
+    - name: comment test result (push)
+      if: ${{ inputs.report-test-result == 'true' && github.event_name == 'push' }}
+      run: |
+        jq -Rs '{"body": . }' _ci_temp/ci-test-report.txt | \
+        curl -sL  -X POST -d @- \
+        -H "Content-Type: application/json" \
+        -H "Authorization: token ${{ github.token }}" \
+        "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/comments"
+      shell: bash

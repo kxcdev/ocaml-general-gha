@@ -1,0 +1,37 @@
+name: Build and test with ghcr.io/kxcinc/ocaml-general
+description: Build and test OCaml projects using the ghcr.io/kxcinc/ocaml-general docker container
+
+inputs:
+  build-command:
+    required: true
+  test-command:
+    required: true
+  skip-testing:
+    required: true
+  setup-command:
+    required: true
+  skip-setup:
+    required: true
+  with-odoc:
+    required: true
+  odoc-build-command:
+    required: true
+  internal--test-log:
+    required: true
+
+outputs:
+  odoc-site-path:
+    description: "Path to odoc document site build result, if with-odoc is set to true"
+
+runs:
+  using: "docker"
+  image: "./selected/Dockerfile"
+  env:
+    OGA_BUILD_COMMAND: "${{ inputs.build-command }}"
+    OGA_TEST_COMMAND: "${{ inputs.test-command }}"
+    OGA_SKIP_TESTING: "${{ inputs.skip-testing }}"
+    OGA_SETUP_COMMAND: "${{ inputs.setup-command }}"
+    OGA_SKIP_SETUP: "${{ inputs.skip-setup }}"
+    OGA_BUILD_WITH_ODOC: "${{ inputs.with-odoc }}"
+    OGA_ODOC_BUILD_COMMAND: "${{ inputs.odoc-build-command }}"
+    OGAI_TEST_LOG: "${{ inputs.internal--test-log }}"
