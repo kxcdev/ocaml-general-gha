@@ -70,7 +70,7 @@ runs:
       with:
         path: ${{ steps.internals_ocaml-general-gha-bare.outputs.odoc-site-path }}
 
-    # - run: echo "odoc-site-path=${{ steps.internals_ocaml-general-gha-bare.outputs.odoc-site-path }}" >> "$GITHUB_OUTPUT"
+    - run: echo "odoc-site-path=${{ steps.internals_ocaml-general-gha-bare.outputs.odoc-site-path }}" >> "$GITHUB_OUTPUT"
 
     - name: Deploy to GitHub Pages
       if: ${{ inputs.odoc-deploy-github-pages }}
