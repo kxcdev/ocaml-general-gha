@@ -57,7 +57,7 @@ else
     echo && echo ">>> test project"
     if [ -z "$OGA_TEST_COMMAND" ]; then
         (set -xe
-         opam exec -- dune build)
+         opam exec -- dune runtest)
     else
         (set -xe
          opam exec -- bash -c "$OGA_TEST_COMMAND")
