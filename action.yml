@@ -145,6 +145,7 @@ runs:
     - name: make ci-test
       run: |
         mkdir -p _ci_temp
+        TEST_RET="${{ steps.main.outputs.return-codes--test }}"
         echo "#### $(([ $TEST_RET -eq 0 ] && echo "✅✅✅") || echo "🚨🚨🚨") Test result for $GITHUB_SHA (Ref_name=\`$GITHUB_REF_NAME\`)" > _ci_temp/ci-test-report.txt
         echo "CI Job: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> _ci_temp/ci-test-report.txt
         echo >> _ci_temp/ci-test-report.txt

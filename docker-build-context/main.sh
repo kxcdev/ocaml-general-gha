@@ -62,5 +62,6 @@ else
     bash -xe -c "$OGA_TEST_COMMAND" 2>&1 | tee "$OGAI_TEST_LOG"
     TEST_RET="$?"
     set +o pipefail
+    echo "return-codes--test=$TEST_RET" >> "$GITHUB_OUTPUT"
     exit $TEST_RET
 fi
