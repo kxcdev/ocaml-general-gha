@@ -6,7 +6,7 @@ GitHub Action to help using [ghcr.io/kxcinc/ocaml-general](https://github.com/kx
 Simply add the following as a step to your GitHub Action workflow file:
 ```yaml
 - name: Build and test OCaml
-  uses: kxcdev/ocaml-general-gha@v2-future
+  uses: kxcdev/ocaml-general-gha@v3
 ```
 
 A template / sample repository is available: https://github.com/kxcdev/ocaml-general-gha-template
@@ -18,7 +18,7 @@ A template / sample repository is available: https://github.com/kxcdev/ocaml-gen
 #### Example usage with options
 ```yaml
 - name: Build and test OCaml
-  uses: kxcdev/ocaml-general-gha@v2-future
+  uses: kxcdev/ocaml-general-gha@v3
   with:
     ocaml-version: 4.14.1
     setup-command: "opam install --locked . -y --deps-only"
