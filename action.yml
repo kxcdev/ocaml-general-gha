@@ -81,9 +81,11 @@ runs:
         cp -r "${{ github.action_path }}/" ".github/vendored_actions/ocaml-general-gha/"
         GHA_ROOT=".github/vendored_actions/ocaml-general-gha"
         GHA_SELECTED_VARIANT="ghcr--ubuntu.22.04-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-amd64"
+        echo "selected-variant=$GHA_SELECTED_VARIANT" >> $GITHUB_OUTPUT
         GHA_SELECTED="$GHA_ROOT/generated/dockerfiles/$GHA_SELECTED_VARIANT"
         cp -r "$GHA_SELECTED/" "$GHA_ROOT/sub-actions/main-action/selected/"
         find "$GHA_ROOT/sub-actions/main-action/selected"
+      id: setup
       shell: bash
     - run: find "./.github/vendored_actions/ocaml-general-gha"
       shell: bash
@@ -92,7 +94,7 @@ runs:
       uses: marocchino/sticky-pull-request-comment@v2
       if: ${{ inputs.report-test-result == 'true' && github.event_name == 'pull_request' }}
       with:
-        header: ${{ github.event_name }}-test-report
+        header: ${{ github.event_name }}-${{ steps.setup.outputs.selected-variant }}-test-report
         only_update: true
         append: true
         message: |
@@ -103,9 +105,12 @@ runs:
       uses: marocchino/sticky-pull-request-comment@v2
       if:  inputs.report-test-result == 'true'
       with:
-        header: ${{ github.event_name }}-test-report
+        header: ${{ github.event_name }}-${{ steps.setup.outputs.selected-variant }}-test-report
         only_create: true
         message: |
+          ## OCaml General GitHub Action Report
+          Docker Image Variant: ${{ steps.setup.outputs.selected-variant }}
+
           ⚡️ Start running test for ${{ github.sha }}.
 
     - run: mkdir -p "./_ci_temp/"
@@ -165,8 +170,10 @@ runs:
       run: |
         mkdir -p _ci_temp
         TEST_RET="${{ steps.main.outputs.return-codes--test }}"
+        echo "## OCaml General GitHub Action Report" > _ci_temp/ci-test-report.txt
         echo "#### $(([ $TEST_RET -eq 0 ] && echo "✅✅✅") || echo "🚨🚨🚨") Test result for $GITHUB_SHA (Ref_name=\`$GITHUB_REF_NAME\`)" > _ci_temp/ci-test-report.txt
         echo "CI Job: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> _ci_temp/ci-test-report.txt
+        echo "Docker Image Variant: ${{ steps.setup.outputs.selected-variant }}" >> _ci_temp/ci-test-report.txt
         echo >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
         cat "./_ci_temp/__gha-test-log.txt" >> _ci_temp/ci-test-report.txt
@@ -178,7 +185,7 @@ runs:
       uses: marocchino/sticky-pull-request-comment@v2
       if:  ${{ inputs.report-test-result == 'true' && github.event_name == 'pull_request' }}
       with:
-        header: ${{ github.event_name }}-test-report
+        header: ${{ github.event_name }}-${{ steps.setup.outputs.selected-variant }}-test-report
         path: _ci_temp/ci-test-report.txt
 
     - name: comment test result (push)
