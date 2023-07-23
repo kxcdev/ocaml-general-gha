@@ -15,7 +15,6 @@ module Types = struct
 
   type config = {
       matrix : available_docker_image_matrix;
-      dockerfile_prefix : string;
     }
 
 end [@@warning "-32"]
@@ -38,8 +37,7 @@ let () =
   let target = ArgOptions.(get_option (StringOption "-target")) |> Option.otherwise target in
   let out_ppf = Format.formatter_of_out_channel output_ch in
   let outf fmt = fprintf out_ppf fmt in
-  let dockerfile_prefix = ArgOptions.(get_option (StringOption "-dockerfile-prefix")) |? "Dockerfile-" in
-  let config = { matrix; dockerfile_prefix } in
+  let config = { matrix } in
   let image_specs =
     let go { matrix; _ } =
       let open List.Ops_monad in
@@ -58,16 +56,24 @@ let () =
     in
     config |> go in
   let emit_dockerfile ppf image_spec =
+    let res path =
+      match ArgOptions.(get_option (StringOption "-resdir")) with
+      | None -> path
+      | Some dir -> Filename.concat dir path in
     let outf fmt = fprintf ppf fmt in
     outf "FROM %s@." image_spec;
-    outf "COPY main.sh /main.sh@.";
+    outf "COPY %s /main.sh@." (res "main.sh");
     outf {|ENTRYPOINT [ "/main.sh" ]@.|};
   in
-  let dockerfile_image_specs = image_specs |&> (?< ((^) config.dockerfile_prefix)) in
-  match target, lazy (target >>? String.chop_prefix config.dockerfile_prefix) with
+  let dockerfile_image_specs = image_specs |&> (?< (?. Filename.concat "Dockerfile")) in
+  match target, lazy (target >>? String.chop_suffix (Filename.dir_sep ^ "Dockerfile")) with
   | None, _ -> image_specs |!> !!(outf "%s : %s@.")
   | Some "dockerfiles-list.inc", _ ->
-     dockerfile_image_specs |!> (fst &> outf "%s@\n");
+     let decor path =
+       match ArgOptions.(get_option (StringOption "-outdir")) with
+       | None -> path
+       | Some dir -> Filename.concat dir path in
+     dockerfile_image_specs |!> (fst &> decor &> outf "%s@\n");
      outf "@?"
   | Some "(all-dockerfiles)", _ -> (
     let dir = ArgOptions.(get_option_exn (StringOption "-outdir")) in
@@ -76,10 +82,11 @@ let () =
        (eprintf "outdir %s does not exist or is not a directory@." dir; exit 2));
     let file_counter = ref 0 in
     dockerfile_image_specs |!> (fun (filename, image_spec) ->
-      let ppf =
-        Filename.concat dir filename
-        |> open_out |> Format.formatter_of_out_channel
-      in
+      let path = Filename.concat dir filename in
+      (let dir = Filename.dirname path in
+       if not Sys.(file_exists dir && is_directory dir)
+       then Sys.mkdir dir 0o755);
+      let ppf = open_out path |> Format.formatter_of_out_channel in
       emit_dockerfile ppf image_spec;
       incr file_counter);
     Log0.verbose ~modul:__FILE__ "%d docker file(s) written to %s"
