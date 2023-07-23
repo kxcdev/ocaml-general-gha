@@ -3,13 +3,21 @@ description: Build and test OCaml projects using the ghcr.io/kxcinc/ocaml-genera
 
 inputs:
   build-command:
+    required: true
   test-command:
+    required: true
   skip-testing:
+    required: true
   setup-command:
+    required: true
   skip-setup:
+    required: true
   with-odoc:
+    required: true
   odoc-build-command:
+    required: true
   internal--test-log:
+    required: true
 
 outputs:
   odoc-site-path:
