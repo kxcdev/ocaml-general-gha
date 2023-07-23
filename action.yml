@@ -6,6 +6,11 @@ branding:
   color: orange
 inputs:
 
+  ocaml-version:
+    default: 5.0.0
+  node-version:
+    default: latest
+
   build-command:
     description: "Override the default build command"
     required: false
@@ -93,10 +98,16 @@ runs:
         message: |
           ⚡️ Start running test for ${{ github.sha }}.
 
+    - run: mkdir -p "${{ env.RUNNER_TEMP }}/${{ env.GITHUB_RUN_ID }}"
+      shell: bash
+
     - name: Build and test with OCaml
       id: main
       uses: "./.github/vendored_actions/ocaml-general-gha/sub-actions/main-action"
       with:
+        ocaml-version: "${{ inputs.ocaml-version }}"
+        node-version: "${{ inputs.node-version }}"
+
         build-command: "${{ inputs.build-command }}"
         test-command: "${{ inputs.test-command }}"
         skip-testing: "${{ inputs.skip-testing }}"
@@ -104,7 +115,7 @@ runs:
         skip-setup: "${{ inputs.skip-setup }}"
         with-odoc: "${{ inputs.with-odoc }}"
         odoc-build-command: "${{ inputs.odoc-build-command }}"
-        internal--test-log: "$RUNNER_TEMP/$GITHUB_RUN_ID/__gha-test-log.txt"
+        internal--test-log: "${{ env.RUNNER_TEMP }}/${{ env.GITHUB_RUN_ID }}/__gha-test-log.txt"
 
     - name: Upload artifact
       if: ${{ inputs.with-odoc == 'true' && inputs.odoc-upload-artifact == 'true' }}
@@ -150,7 +161,7 @@ runs:
         echo "CI Job: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> _ci_temp/ci-test-report.txt
         echo >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
-        cat "$RUNNER_TEMP/$GITHUB_RUN_ID/__gha-test-log.txt" >> _ci_temp/ci-test-report.txt
+        cat "${{ env.RUNNER_TEMP }}/${{ env.GITHUB_RUN_ID }}/__gha-test-log.txt" >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
         exit $TEST_RET
       shell: bash
