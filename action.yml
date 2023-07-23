@@ -1,9 +1,11 @@
 name: Build and test with ghcr.io/kxcinc/ocaml-general
 description: Build and test OCaml projects using the ghcr.io/kxcinc/ocaml-general docker container
 author: KXC Members and Contributors
+
 branding:
   icon: sunrise
   color: orange
+
 inputs:
 
   report-test-result:
@@ -73,12 +75,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - run: echo "action_path is " "${{ github.action_path }}"
-      shell: bash
-    - run: find "${{ github.action_path }}"
-      shell: bash
-    - run: echo "pwd is $(pwd)"
-      shell: bash
     - run: |
         mkdir -p .github/vendored_actions
         cp -r "${{ github.action_path }}/" ".github/vendored_actions/ocaml-general-gha/"
@@ -101,8 +97,6 @@ runs:
         cp -r "$GHA_SELECTED/" "$GHA_ROOT/sub-actions/main-action/selected/"
         find "$GHA_ROOT/sub-actions/main-action/selected"
       id: setup
-      shell: bash
-    - run: find "./.github/vendored_actions/ocaml-general-gha"
       shell: bash
 
     - name: Notify test running (update)
