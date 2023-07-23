@@ -9,6 +9,9 @@ inputs:
   report-test-result:
     required: false
     default: true
+  pr-report-test-result:
+    required: false
+    default: true
 
   ocaml-version:
     default: 5.0.0
@@ -92,7 +95,7 @@ runs:
 
     - name: Notify test running (update)
       uses: marocchino/sticky-pull-request-comment@v2
-      if: ${{ inputs.report-test-result == 'true' && github.event_name == 'pull_request' }}
+      if: ${{ inputs.report-test-result == 'true' && inputs.pr-report-test-result == 'true' && github.event_name == 'pull_request' }}
       with:
         header: ${{ github.event_name }}-${{ steps.setup.outputs.selected-variant }}-test-report
         only_update: true
@@ -103,7 +106,7 @@ runs:
 
     - name: Notify test running (fresh)
       uses: marocchino/sticky-pull-request-comment@v2
-      if:  inputs.report-test-result == 'true'
+      if:  ${{ inputs.report-test-result == 'true' && inputs.pr-report-test-result == 'true' }}
       with:
         header: ${{ github.event_name }}-${{ steps.setup.outputs.selected-variant }}-test-report
         only_create: true
@@ -183,7 +186,7 @@ runs:
 
     - name: comment test result (pr)
       uses: marocchino/sticky-pull-request-comment@v2
-      if:  ${{ inputs.report-test-result == 'true' && github.event_name == 'pull_request' }}
+      if:  ${{ inputs.report-test-result == 'true' && inputs.pr-report-test-result == 'true' && github.event_name == 'pull_request' }}
       with:
         header: ${{ github.event_name }}-${{ steps.setup.outputs.selected-variant }}-test-report
         path: _ci_temp/ci-test-report.txt
