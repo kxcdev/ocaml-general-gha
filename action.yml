@@ -75,9 +75,8 @@ runs:
       shell: bash
 
     - name: Build and test with OCaml
-      id: internals_ocaml-general-gha-bare
-      # uses: kxcdev/ocaml-general-gha-bare@78ec6ee277e0ee5c0185e8f083cf51cb65cae5e4
-      uses: "./.github/vendored_actions/ocaml-general-gha/sub-actions/v2-original"
+      id: main
+      uses: "./.github/vendored_actions/ocaml-general-gha/sub-actions/main-action"
       with:
         build-command: "${{ inputs.build-command }}"
         test-command: "${{ inputs.test-command }}"
@@ -91,13 +90,13 @@ runs:
       if: ${{ inputs.with-odoc == 'true' && inputs.odoc-upload-artifact == 'true' }}
       uses: actions/upload-pages-artifact@v2
       with:
-        path: ${{ steps.internals_ocaml-general-gha-bare.outputs.odoc-site-path }}
+        path: ${{ steps.main.outputs.odoc-site-path }}
         name: ${{ inputs.odoc-upload-artifact-name }}
 
     ## won't work because of actions/runner#2009
-    - run: echo "odoc-site-path=${{ steps.internals_ocaml-general-gha-bare.outputs.odoc-site-path }}" >> $GITHUB_OUTPUT
+    - run: echo "odoc-site-path=${{ steps.main.outputs.odoc-site-path }}" >> $GITHUB_OUTPUT
       shell: bash
-      id: internals_ocaml-general-gha-odoc-site-path
+      id: output--odoc-site-path
       if: ${{ inputs.with-odoc == 'true' }}
 
     - run: |
@@ -114,11 +113,11 @@ runs:
 
     # - name: Deploy to GitHub Pages
     #   if: ${{ inputs.odoc-deploy-github-pages }}
-    #   id: internals_ocaml-general-gha-deployment
+    #   id: deployment
     #   uses: actions/deploy-pages@v2
 
     ## won't work because of actions/runner#2009
-    # - run: echo "odoc-github-pages-url=${{ steps.internals_ocaml-general-gha-deployment.outputs.page_url }}" >> $GITHUB_OUTPUT
+    # - run: echo "odoc-github-pages-url=${{ steps.deployment.outputs.page_url }}" >> $GITHUB_OUTPUT
     #   shell: bash
-    #   id: internals_ocaml-general-gha-odoc-ghp-url
+    #   id: output--odoc-github-pages-url
     #   if: ${{ inputs.odoc-deploy-github-pages }}
