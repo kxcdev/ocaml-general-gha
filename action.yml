@@ -77,12 +77,12 @@ runs:
       id: internals_ocaml-general-gha-odoc-site-path
       if: ${{ inputs.with-odoc }}
 
-    - name: Deploy to GitHub Pages
-      if: ${{ inputs.odoc-deploy-github-pages }}
-      id: internals_ocaml-general-gha-deployment
-      uses: actions/deploy-pages@v2
+    # - name: Deploy to GitHub Pages
+    #   if: ${{ inputs.odoc-deploy-github-pages }}
+    #   id: internals_ocaml-general-gha-deployment
+    #   uses: actions/deploy-pages@v2
 
-    - run: echo "odoc-github-pages-url=${{ steps.internals_ocaml-general-gha-deployment.outputs.page_url }}" >> $GITHUB_OUTPUT
-      shell: bash
-      id: internals_ocaml-general-gha-odoc-ghp-url
-      if: ${{ inputs.odoc-deploy-github-pages }}
+    # - run: echo "odoc-github-pages-url=${{ steps.internals_ocaml-general-gha-deployment.outputs.page_url }}" >> $GITHUB_OUTPUT
+    #   shell: bash
+    #   id: internals_ocaml-general-gha-odoc-ghp-url
+    #   if: ${{ inputs.odoc-deploy-github-pages }}
