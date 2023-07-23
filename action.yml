@@ -76,7 +76,8 @@ runs:
         mkdir -p .github/vendored_actions
         cp -r "${{ github.action_path }}/" ".github/vendored_actions/ocaml-general-gha/"
         GHA_ROOT=".github/vendored_actions/ocaml-general-gha"
-        GHA_SELECTED="$GHA_ROOT/generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64"
+        GHA_SELECTED_VARIANT="ghcr--ubuntu.22.04-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-amd64"
+        GHA_SELECTED="$GHA_ROOT/generated/dockerfiles/$GHA_SELECTED_VARIANT"
         cp -r "$GHA_SELECTED/" "$GHA_ROOT/sub-actions/main-action/selected/"
         find "$GHA_ROOT/sub-actions/main-action/selected"
       shell: bash
@@ -109,9 +110,6 @@ runs:
       id: main
       uses: "./.github/vendored_actions/ocaml-general-gha/sub-actions/main-action"
       with:
-        ocaml-version: "${{ inputs.ocaml-version }}"
-        node-version: "${{ inputs.node-version }}"
-
         build-command: "${{ inputs.build-command }}"
         test-command: "${{ inputs.test-command }}"
         skip-testing: "${{ inputs.skip-testing }}"
