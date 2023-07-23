@@ -4,17 +4,11 @@
 ## ref: https://github.com/orgs/community/discussions/26855
 
 ### STEP 0.
-pushd /github/workspace
-
-# print workspace and ci machine info
-echo ">>> DEBUG INFO"
-echo OGA_BUILD_COMMAND: "$OGA_BUILD_COMMAND"
-echo OGA_TEST_COMMAND: "$OGA_TEST_COMMAND"
-echo OGA_SKIP_TESTING: "$OGA_SKIP_TESTING"
-
 echo ">>> GITHUB_WORKSPACE"
 echo "$GITHUB_WORKSPACE"
+cd "$GITHUB_WORKSPACE"
 
+# print workspace and ci machine info
 echo ">>> uname -a"
 uname -a
 
@@ -36,9 +30,12 @@ git rev-parse --is-inside-work-tree && \
     git ls-files
 
 ### STEP 1. install dependencies
-echo && echo ">>> install OCaml dependencies"
-(set -xe; opam install . --yes --deps-only --with-test --verbose)
-
+if [ "$OGA_SKIP_SETUP" == "true" ]; then
+    echo && echo ">>> setup is skipped as inputs.skip-setup is set"
+else
+    echo && echo ">>> install OCaml dependencies (setup)"
+    bash -xe -c "$OGA_SETUP_COMMAND"
+fi
 
 ### STEP 2. build
 echo && echo ">>> build project"
