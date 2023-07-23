@@ -83,7 +83,19 @@ runs:
         mkdir -p .github/vendored_actions
         cp -r "${{ github.action_path }}/" ".github/vendored_actions/ocaml-general-gha/"
         GHA_ROOT=".github/vendored_actions/ocaml-general-gha"
-        GHA_SELECTED_VARIANT="ghcr--ubuntu.22.04-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-amd64"
+        case "${{ runner.arch }}" in
+          X64)
+            GHA_VARIANT_ARCH=amd64
+            ;;
+          ARM64)
+            GHA_VARIANT_ARCH=arm64
+            ;;
+          *)
+            echo "unsupported github runner.arch: ${{ runner.arch }}"
+            exit 2
+            ;;
+        esac
+        GHA_SELECTED_VARIANT="ghcr--ubuntu.22.04-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-$GHA_VARIANT_ARCH
         echo "selected-variant=$GHA_SELECTED_VARIANT" >> $GITHUB_OUTPUT
         GHA_SELECTED="$GHA_ROOT/generated/dockerfiles/$GHA_SELECTED_VARIANT"
         cp -r "$GHA_SELECTED/" "$GHA_ROOT/sub-actions/main-action/selected/"
