@@ -1,0 +1,18 @@
+(rule
+ (target dockerfiles-list.inc)
+ (action
+   (run
+     ../generators/gen_dockerfiles.exe
+     -info %{dep:../info/available-docker-image.json}
+     -output %{target})))
+
+(subdir
+  dockerfiles
+ (rule
+  (targets %{read-lines:../dockerfiles-list.inc})
+  (mode (promote (until-clean)))
+  (action
+   (run
+     ../../generators/gen_dockerfiles.exe
+     -info %{dep:../../info/available-docker-image.json}
+     -target "(all-dockerfiles)" -outdir .))))

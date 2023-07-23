@@ -1,0 +1,13 @@
+{
+  "_filename": "available-docker-image.json",
+  "_comments": "image-matrix.json - to be kept in sync with https://github.com/kxcinc/pubinfra.dockerfiles/blob/main/.github/workflows/ocaml-general.yml",
+  "matrix": {
+    "image-location": [
+      { "label": "ghcr", "base": "ghcr.io/kxcinc/ocaml-general" }
+    ],
+    "ocaml-version": ["4.12.1", "4.13.1", "4.14.1", "5.0.0"],
+    "arch": ["amd64", "arm64"],
+    "node-version": ["fermium", "gallium", "hydrogen", "latest"],
+    "os": ["ubuntu.22.04"]
+  }
+}

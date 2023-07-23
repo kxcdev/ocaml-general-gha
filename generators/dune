@@ -1,0 +1,5 @@
+(executables
+ (names gen_dockerfiles)
+ (libraries kxclib yojson)
+ (preprocess (pps ppx_yojson_conv ppx_deriving.show))
+ (flags :standard -open Kxclib))
