@@ -38,6 +38,10 @@ inputs:
     required: false
     default: "opam exec -- dune build @doc"
 
+outputs:
+  odoc-site-path:
+    description: "Path to odoc document site build result, if with-odoc is set to true"
+
 runs:
   using: "docker"
   image: "generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile"

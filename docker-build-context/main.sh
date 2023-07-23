@@ -51,6 +51,7 @@ fi
 if [ "$OGA_BUILD_WITH_ODOC" == "true" ]; then
     echo && echo ">>> build odoc"
     bash -xe -c "$OGA_ODOC_BUILD_COMMAND"
+    echo "odoc-site-path=_build/default/_doc/_html" >> "$GITHUB_OUTPUT"
 fi
 
 ### STEP 3. test
