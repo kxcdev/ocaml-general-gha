@@ -95,7 +95,7 @@ runs:
             exit 2
             ;;
         esac
-        GHA_SELECTED_VARIANT="ghcr--ubuntu.22.04-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-$GHA_VARIANT_ARCH""
+        GHA_SELECTED_VARIANT="ghcr--ubuntu.22.04-ocaml.${{ inputs.ocaml-version }}-node.${{ inputs.node-version }}-$GHA_VARIANT_ARCH"
         echo "selected-variant=$GHA_SELECTED_VARIANT" >> $GITHUB_OUTPUT
         GHA_SELECTED="$GHA_ROOT/generated/dockerfiles/$GHA_SELECTED_VARIANT"
         cp -r "$GHA_SELECTED/" "$GHA_ROOT/sub-actions/main-action/selected/"
