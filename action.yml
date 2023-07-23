@@ -74,7 +74,7 @@ runs:
         odoc-build-command: "${{ inputs.odoc-build-command }}"
 
     - name: Upload artifact
-      if: ${{ inputs.with-odoc && inputs.odoc-upload-artifact }}
+      if: ${{ inputs.with-odoc == 'true' && inputs.odoc-upload-artifact == 'true' }}
       uses: actions/upload-pages-artifact@v2
       with:
         path: ${{ steps.internals_ocaml-general-gha-bare.outputs.odoc-site-path }}
@@ -84,13 +84,13 @@ runs:
     - run: echo "odoc-site-path=${{ steps.internals_ocaml-general-gha-bare.outputs.odoc-site-path }}" >> $GITHUB_OUTPUT
       shell: bash
       id: internals_ocaml-general-gha-odoc-site-path
-      if: ${{ inputs.with-odoc }}
+      if: ${{ inputs.with-odoc == 'true' }}
 
     - run: |
         echo "odoc-deploy-github-pages not yet supported, pending actions/runner#2009"
         false
       shell: bash
-      if: ${{ inputs.odoc-deploy-github-pages }}
+      if: ${{ inputs.odoc-deploy-github-pages == 'true' }}
 
     ## waiting for the resolution of actions/runner#2009
 
