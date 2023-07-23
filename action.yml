@@ -75,6 +75,10 @@ runs:
     - run: |
         mkdir -p .github/vendored_actions
         cp -r "${{ github.action_path }}/" ".github/vendored_actions/ocaml-general-gha/"
+        GHA_ROOT=".github/vendored_actions/ocaml-general-gha"
+        GHA_SELECTED="$GHA_ROOT/generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64"
+        cp -r "$GHA_SELECTED/" "$GHA_ROOT/sub-actions/main-action/selected/"
+        find "$GHA_ROOT/sub-actions/main-action/selected"
       shell: bash
     - run: find "./.github/vendored_actions/ocaml-general-gha"
       shell: bash
@@ -98,7 +102,7 @@ runs:
         message: |
           ⚡️ Start running test for ${{ github.sha }}.
 
-    - run: mkdir -p "${{ env.RUNNER_TEMP }}/${{ env.GITHUB_RUN_ID }}"
+    - run: mkdir -p "./_ci_temp/"
       shell: bash
 
     - name: Build and test with OCaml
@@ -115,7 +119,7 @@ runs:
         skip-setup: "${{ inputs.skip-setup }}"
         with-odoc: "${{ inputs.with-odoc }}"
         odoc-build-command: "${{ inputs.odoc-build-command }}"
-        internal--test-log: "${{ env.RUNNER_TEMP }}/${{ env.GITHUB_RUN_ID }}/__gha-test-log.txt"
+        internal--test-log: "./_ci_temp/__gha-test-log.txt"
 
     - name: Upload artifact
       if: ${{ inputs.with-odoc == 'true' && inputs.odoc-upload-artifact == 'true' }}
@@ -161,7 +165,7 @@ runs:
         echo "CI Job: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> _ci_temp/ci-test-report.txt
         echo >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
-        cat "${{ env.RUNNER_TEMP }}/${{ env.GITHUB_RUN_ID }}/__gha-test-log.txt" >> _ci_temp/ci-test-report.txt
+        cat "./_ci_temp/__gha-test-log.txt" >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
         exit $TEST_RET
       shell: bash

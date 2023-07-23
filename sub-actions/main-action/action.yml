@@ -7,7 +7,7 @@ outputs:
 
 runs:
   using: "docker"
-  image: "../../generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile"
+  image: "./selected/Dockerfile"
   env:
     OGA_BUILD_COMMAND: "${{ inputs.build-command }}"
     OGA_TEST_COMMAND: "${{ inputs.test-command }}"
