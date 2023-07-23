@@ -40,8 +40,26 @@ echo && echo ">>> install OCaml dependencies"
 (set -xe; opam install . --yes --deps-only --with-test --verbose)
 
 
-### STEP 2. build and test
-echo && echo ">>> dune build and runtest"
-(set -xe
- opam exec -- dune build
- opam exec -- dune runtest)
+### STEP 2. build
+echo && echo ">>> build project"
+if [ -z "$OGA_BUILD_COMMAND" ]; then
+    (set -xe
+     opam exec -- dune build)
+else
+    (set -xe
+     opam exec -- bash -c "$OGA_BUILD_COMMAND")
+fi
+
+### STEP 3. test
+if [ "$OGA_SKIP_TESTING" == "true" ]; then
+    echo && echo ">>> testing is skipped as inputs.skip-testing is set"
+else
+    echo && echo ">>> test project"
+    if [ -z "$OGA_TEST_COMMAND" ]; then
+        (set -xe
+         opam exec -- dune build)
+    else
+        (set -xe
+         opam exec -- bash -c "$OGA_TEST_COMMAND")
+    fi
+fi
