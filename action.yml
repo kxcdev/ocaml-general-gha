@@ -6,4 +6,4 @@ branding:
   color: orange
 runs:
   using: "docker"
-  image: "generated/dockerfiles/Dockerfile-ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64"
+  image: "generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile"
