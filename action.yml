@@ -81,6 +81,6 @@ runs:
       id: internals_ocaml-general-gha-deployment
       uses: actions/deploy-pages@v2
 
-    - run: echo "odoc-site-path=${{ steps.internals_ocaml-general-gha-deployment.outputs.page_url }}" >> "$GITHUB_OUTPUT"
+    - run: echo "odoc-github-pages-url=${{ steps.internals_ocaml-general-gha-deployment.outputs.page_url }}" >> "$GITHUB_OUTPUT"
       shell: bash
       if: ${{ inputs.odoc-deploy-github-pages }}
