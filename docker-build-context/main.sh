@@ -39,13 +39,7 @@ fi
 
 ### STEP 2. build
 echo && echo ">>> build project"
-if [ -z "$OGA_BUILD_COMMAND" ]; then
-    (set -xe
-     opam exec -- dune build)
-else
-    (set -xe
-     opam exec -- bash -c "$OGA_BUILD_COMMAND")
-fi
+bash -xe -c "$OGA_BUILD_COMMAND"
 
 ### STEP 2b. build odoc if requested
 if [ "$OGA_BUILD_WITH_ODOC" == "true" ]; then
@@ -55,15 +49,18 @@ if [ "$OGA_BUILD_WITH_ODOC" == "true" ]; then
 fi
 
 ### STEP 3. test
+if [ -z "$OGAI_TEST_LOG" ]; then
+    OGAI_TEST_LOG="$(mktemp)"
+    trap '{ rm -f -- "$OGAI_TEST_LOG" }'
+fi
+
 if [ "$OGA_SKIP_TESTING" == "true" ]; then
     echo && echo ">>> testing is skipped as inputs.skip-testing is set"
 else
     echo && echo ">>> test project"
-    if [ -z "$OGA_TEST_COMMAND" ]; then
-        (set -xe
-         opam exec -- dune runtest)
-    else
-        (set -xe
-         opam exec -- bash -c "$OGA_TEST_COMMAND")
-    fi
+    set -o pipefail
+    bash -xe -c "$OGA_TEST_COMMAND" 2>&1 | tee "$OGAI_TEST_LOG"
+    TEST_RET="$?"
+    set +o pipefail
+    exit $TEST_RET
 fi

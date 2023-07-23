@@ -16,3 +16,4 @@ runs:
     OGA_SKIP_SETUP: "${{ inputs.skip-setup }}"
     OGA_BUILD_WITH_ODOC: "${{ inputs.with-odoc }}"
     OGA_ODOC_BUILD_COMMAND: "${{ inputs.odoc-build-command }}"
+    OGAI_TEST_LOG: "${{ internal--test-log }}"
