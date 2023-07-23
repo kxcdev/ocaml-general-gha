@@ -1,3 +1,3 @@
 FROM ghcr.io/kxcinc/ocaml-general:ubuntu.22.04-ocaml.4.12.1-node.gallium-arm64
-COPY ../../../main.sh /main.sh
+COPY main.sh /main.sh
 ENTRYPOINT [ "/main.sh" ]

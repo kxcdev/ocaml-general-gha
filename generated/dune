@@ -10,12 +10,14 @@
 (rule
  (targets
   (dir dockerfiles))
+ (deps dockerfiles-list.txt ../main.sh)
  (alias all)
  (mode (promote (until-clean)))
  (action
   (progn
-   (system "mkdir -p dockerfiles")
+   (bash "mkdir -p dockerfiles")
    (run
      ../generators/gen_dockerfiles.exe
      -info %{dep:../info/available-docker-image.json}
-     -target "(all-dockerfiles)" -resdir "../../.." -outdir dockerfiles))))
+     -target "(all-dockerfiles)" -outdir dockerfiles)
+   (bash "cat dockerfiles-list.txt | xargs -n1 dirname | (cd .. && xargs -n1 cp main.sh)"))))
