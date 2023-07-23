@@ -7,6 +7,11 @@
 pushd /github/workspace
 
 # print workspace and ci machine info
+echo ">>> DEBUG INFO"
+echo OGA_BUILD_COMMAND: "$OGA_BUILD_COMMAND"
+echo OGA_TEST_COMMAND: "$OGA_TEST_COMMAND"
+echo OGA_SKIP_TESTING: "$OGA_SKIP_TESTING"
+
 echo ">>> GITHUB_WORKSPACE"
 echo "$GITHUB_WORKSPACE"
 
