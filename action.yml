@@ -23,12 +23,12 @@ inputs:
   build-command:
     description: "Override the default build command"
     required: false
-    default: "opam exec -- dune build"
+    default: "dune build"
 
   test-command:
     description: "Override the default test command"
     required: false
-    default: "opam exec -- dune runtest"
+    default: "dune runtest"
   skip-testing:
     description: "Whether or not to skip running the tests"
     required: false
@@ -50,7 +50,7 @@ inputs:
   odoc-build-command:
     description: "Override the default odoc build command"
     required: false
-    default: "opam exec -- dune build @doc"
+    default: "dune build @doc"
   odoc-upload-artifact:
     required: false
     default: true
@@ -184,9 +184,11 @@ runs:
         echo "CI Job: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> _ci_temp/ci-test-report.txt
         echo "Docker Image Variant: ${{ steps.setup.outputs.selected-variant }}" >> _ci_temp/ci-test-report.txt
         echo >> _ci_temp/ci-test-report.txt
+        echo '<details><summary>Test Result (collapsed)</summary>' >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
         cat "./_ci_temp/__gha-test-log.txt" >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
+        echo '</details>' >> _ci_temp/ci-test-report.txt
         exit $TEST_RET
       shell: bash
 
