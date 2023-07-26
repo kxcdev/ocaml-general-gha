@@ -34,17 +34,17 @@ if [ "$OGA_SKIP_SETUP" == "true" ]; then
     echo && echo ">>> setup is skipped as inputs.skip-setup is set"
 else
     echo && echo ">>> install OCaml dependencies (setup)"
-    bash -xe -c "$OGA_SETUP_COMMAND"
+    bash -xe -c "eval \$(opam env); $OGA_SETUP_COMMAND"
 fi
 
 ### STEP 2. build
 echo && echo ">>> build project"
-bash -xe -c "$OGA_BUILD_COMMAND"
+bash -xe -c "eval \$(opam env); $OGA_BUILD_COMMAND"
 
 ### STEP 2b. build odoc if requested
 if [ "$OGA_BUILD_WITH_ODOC" == "true" ]; then
     echo && echo ">>> build odoc"
-    bash -xe -c "$OGA_ODOC_BUILD_COMMAND"
+    bash -xe -c "eval \$(opam env); $OGA_ODOC_BUILD_COMMAND"
     echo "odoc-site-path=_build/default/_doc/_html" >> "$GITHUB_OUTPUT"
 fi
 
@@ -59,7 +59,7 @@ if [ "$OGA_SKIP_TESTING" == "true" ]; then
 else
     echo && echo ">>> test project"
     set -o pipefail
-    bash -xe -c "$OGA_TEST_COMMAND" 2>&1 | tee "$OGAI_TEST_LOG"
+    bash -xe -c "eval \$(opam env); $OGA_TEST_COMMAND" 2>&1 | tee "$OGAI_TEST_LOG"
     TEST_RET="$?"
     set +o pipefail
     echo "return-codes--test=$TEST_RET" >> "$GITHUB_OUTPUT"
