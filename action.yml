@@ -187,8 +187,10 @@ runs:
         echo '<details><summary>Test Result (collapsed)</summary>' >> _ci_temp/ci-test-report.txt
         echo >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
-        cat "./_ci_temp/__gha-test-log.txt" >> _ci_temp/ci-test-report.txt
+        cat "./_ci_temp/__gha-test-log.txt" | head -c 65000 > "./_ci_temp/__gha-test-log.chopped.txt"
+        cat "./_ci_temp/__gha-test-log.chopped.txt" >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
+        cmp --silent "./_ci_temp/__gha-test-log.txt" "./_ci_temp/__gha-test-log.chopped.txt" || echo '(test result chopped due to GitHub comment length constraint)' >> _ci_temp/ci-test-report.txt
         echo '</details>' >> _ci_temp/ci-test-report.txt
         exit $TEST_RET
       shell: bash
