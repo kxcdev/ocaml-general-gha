@@ -185,6 +185,7 @@ runs:
         echo "Docker Image Variant: ${{ steps.setup.outputs.selected-variant }}" >> _ci_temp/ci-test-report.txt
         echo >> _ci_temp/ci-test-report.txt
         echo '<details><summary>Test Result (collapsed)</summary>' >> _ci_temp/ci-test-report.txt
+        echo >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
         cat "./_ci_temp/__gha-test-log.txt" >> _ci_temp/ci-test-report.txt
         echo '```' >> _ci_temp/ci-test-report.txt
