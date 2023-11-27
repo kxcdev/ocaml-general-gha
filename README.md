@@ -71,10 +71,12 @@ A template / sample repository is available: https://github.com/kxcdev/ocaml-gen
       - 4.13.1
       - 4.14.1
       - 5.0.0
+      - 5.1.0
     node-version:
       - fermium # v14 Maintenance LTS
       - gallium # v16 Active LTS
       - hydrogen # v18 Active LTS
+      - iron # v20 Active LTS
       - latest
     ```
 
