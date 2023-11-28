@@ -1,3 +1,5 @@
+open Ppx_yojson_conv_lib.Yojson_conv
+
 module Types = struct
 
   type docker_image_location_spec = {
