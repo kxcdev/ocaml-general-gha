@@ -35,16 +35,33 @@ if [ "$OGA_SKIP_SETUP" == "true" ]; then
 else
     echo && echo ">>> install OCaml dependencies (setup)"
     bash -xe -c "eval \$(opam env); $OGA_SETUP_COMMAND"
+    SETUP_RET=$?
+    if [ $SETUP_RET != "0" ]; then
+        echo "return-codes--setup=$SETUP_RET" >> "$GITHUB_OUTPUT"
+        exit $SETUP_RET
+    fi
 fi
 
 ### STEP 2. build
 echo && echo ">>> build project"
 bash -xe -c "eval \$(opam env); $OGA_BUILD_COMMAND"
 
+BUILD_RET=$?
+if [ $BUILD_RET != "0" ]; then
+    echo "return-codes--build=$BUILD_RET" >> "$GITHUB_OUTPUT"
+    exit $BUILD_RET
+fi
+
 ### STEP 2b. build odoc if requested
 if [ "$OGA_BUILD_WITH_ODOC" == "true" ]; then
     echo && echo ">>> build odoc"
     bash -xe -c "eval \$(opam env); $OGA_ODOC_BUILD_COMMAND"
+    BUILD_ODOC_RET=$?
+    if [ $BUILD_ODOC_RET != "0" ]; then
+        echo "return-codes--build-odoc=$BUILD_ODOC_RET" >> "$GITHUB_OUTPUT"
+        exit $BUILD_ODOC_RET
+    fi
+
     echo "odoc-site-path=_build/default/_doc/_html" >> "$GITHUB_OUTPUT"
 fi
 

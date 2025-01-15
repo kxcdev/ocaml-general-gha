@@ -1,4 +1,5 @@
 module Types = struct
+  open Ppx_yojson_conv_lib.Yojson_conv
 
   type docker_image_location_spec = {
       label : string;
