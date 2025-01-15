@@ -30,3 +30,11 @@ generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.hydrogen-amd64/Dockerf
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.hydrogen-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.fermium-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.fermium-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.gallium-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.gallium-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.hydrogen-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.hydrogen-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.latest-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.latest-arm64/Dockerfile
