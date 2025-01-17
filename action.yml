@@ -140,7 +140,7 @@ runs:
 
     - name: Upload artifact
       if: ${{ inputs.with-odoc == 'true' && inputs.odoc-upload-artifact == 'true' }}
-      uses: actions/upload-pages-artifact@v2
+      uses: actions/upload-pages-artifact@v3
       with:
         path: ${{ steps.main.outputs.odoc-site-path }}
         name: ${{ inputs.odoc-upload-artifact-name }}
