@@ -1,0 +1,3 @@
+FROM ghcr.io/kxcinc/ocaml-general:ubuntu.22.04-ocaml.5.3.0-node.krypton-arm64
+COPY build-context/main.sh /main.sh
+ENTRYPOINT [ "/main.sh" ]
