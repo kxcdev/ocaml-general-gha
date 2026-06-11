@@ -6,6 +6,8 @@ generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.12.1-node.iron-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.12.1-node.iron-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.12.1-node.jod-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.12.1-node.jod-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.12.1-node.krypton-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.12.1-node.krypton-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.12.1-node.latest-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.12.1-node.latest-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.13.1-node.gallium-amd64/Dockerfile
@@ -16,6 +18,8 @@ generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.13.1-node.iron-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.13.1-node.iron-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.13.1-node.jod-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.13.1-node.jod-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.13.1-node.krypton-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.13.1-node.krypton-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.13.1-node.latest-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.13.1-node.latest-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.1-node.gallium-amd64/Dockerfile
@@ -26,6 +30,8 @@ generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.1-node.iron-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.1-node.iron-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.1-node.jod-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.1-node.jod-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.1-node.krypton-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.1-node.krypton-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.1-node.latest-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.1-node.latest-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.2-node.gallium-amd64/Dockerfile
@@ -36,6 +42,8 @@ generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.2-node.iron-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.2-node.iron-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.2-node.jod-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.2-node.jod-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.2-node.krypton-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.2-node.krypton-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.2-node.latest-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.4.14.2-node.latest-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.gallium-amd64/Dockerfile
@@ -46,6 +54,8 @@ generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.iron-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.iron-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.jod-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.jod-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.krypton-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.krypton-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.0.0-node.latest-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.gallium-amd64/Dockerfile
@@ -56,6 +66,8 @@ generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.iron-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.iron-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.jod-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.jod-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.krypton-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.krypton-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.latest-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.0-node.latest-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.1-node.gallium-amd64/Dockerfile
@@ -66,6 +78,8 @@ generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.1-node.iron-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.1-node.iron-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.1-node.jod-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.1-node.jod-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.1-node.krypton-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.1-node.krypton-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.1-node.latest-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.1.1-node.latest-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.3.0-node.gallium-amd64/Dockerfile
@@ -76,5 +90,19 @@ generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.3.0-node.iron-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.3.0-node.iron-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.3.0-node.jod-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.3.0-node.jod-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.3.0-node.krypton-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.3.0-node.krypton-arm64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.3.0-node.latest-amd64/Dockerfile
 generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.3.0-node.latest-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.gallium-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.gallium-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.hydrogen-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.hydrogen-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.iron-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.iron-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.jod-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.jod-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.krypton-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.krypton-arm64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.latest-amd64/Dockerfile
+generated/dockerfiles/ghcr--ubuntu.22.04-ocaml.5.4.1-node.latest-arm64/Dockerfile
